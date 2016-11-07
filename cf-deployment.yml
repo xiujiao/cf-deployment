@@ -814,22 +814,26 @@ instance_groups:
             ports: '53'
             protocol: udp
         install_buildpacks: &10
-        - name: java_buildpack
-          package: buildpack_java
-        - name: ruby_buildpack
-          package: ruby-buildpack
-        - name: nodejs_buildpack
-          package: nodejs-buildpack
-        - name: go_buildpack
-          package: go-buildpack
-        - name: python_buildpack
-          package: python-buildpack
-        - name: php_buildpack
-          package: php-buildpack
-        - name: staticfile_buildpack
-          package: staticfile-buildpack
         - name: binary_buildpack
           package: binary-buildpack
+        - name: dotnet_core_buildpack
+          package: dotnet-core-buildpack
+        - name: go_buildpack
+          package: go-buildpack
+        - name: java_buildpack
+          package: buildpack_java
+        - name: nodejs_buildpack
+          package: nodejs-buildpack
+        - name: php_buildpack
+          package: php-buildpack
+        - name: python_buildpack
+          package: python-buildpack
+        - name: python_buildpack
+          package: python-buildpack
+        - name: ruby_buildpack
+          package: ruby-buildpack
+        - name: staticfile_buildpack
+          package: staticfile-buildpack
         default_to_diego_backend: true
         db_encryption_key: "((cc_db_encryption_key))"
         bulk_api_password: "((cc_bulk_api_password))"
@@ -905,24 +909,26 @@ instance_groups:
         url: "((uaa_url))"
         jwt:
           verification_key: "((uaa_jwt_verification_key))"
-  - name: java-buildpack
-    release: cf
-  - name: java-offline-buildpack
-    release: cf
-  - name: go-buildpack
-    release: cf
   - name: binary-buildpack
-    release: cf
+    release: binary-buildpack
+  - name: dotnet-core-buildpack
+    release: dotnet-core-buildpack
+  - name: go-buildpack
+    release: go-buildpack
+  - name: java-buildpack
+    release: java-buildpack
+  - name: java-offline-buildpack
+    release: java-offline-buildpack
   - name: nodejs-buildpack
-    release: cf
-  - name: ruby-buildpack
-    release: cf
+    release: nodejs-buildpack
   - name: php-buildpack
-    release: cf
+    release: php-buildpack
   - name: python-buildpack
-    release: cf
+    release: python-buildpack
+  - name: ruby-buildpack
+    release: ruby-buildpack
   - name: staticfile-buildpack
-    release: cf
+    release: staticfile-buildpack
   - name: route_registrar
     release: routing
     properties:
@@ -1251,17 +1257,17 @@ releases:
   version: 1.10.0
   sha1: 5021acc1aee1fa92f75dec9927073f8febdccf3b
 - name: consul
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/consul-release?v=133
-  version: '133'
-  sha1: ee72ca4a259701f82403d3c139517b81389a74c8
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/consul-release?v=134
+  version: '134'
+  sha1: 1593817ec5747d03dd957fb1c07de5269742e4eb
 - name: diego
   url: https://bosh.io/d/github.com/cloudfoundry/diego-release?v=0.1488.0
   version: 0.1488.0
   sha1: aad822353a4753232172896981da1f1f10f45194
 - name: etcd
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release?v=79
-  version: '79'
-  sha1: ec8f825a92634b49230bd8621b7f3a4756b07ca7
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release?v=81
+  version: '81'
+  sha1: 50ccc487d30746283f1ca4c85377444147dc98ef
 - name: loggregator
   url: https://bosh.io/d/github.com/cloudfoundry/loggregator?v=65
   version: '65'
@@ -1283,17 +1289,53 @@ releases:
   version: 1.0.3
   sha1: 0c04b944d50ec778f5b34304fd4bc8fc0ed83b2b
 - name: cflinuxfs2-rootfs
-  url: https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release?v=1.38.0
-  version: 1.38.0
-  sha1: 7c1406a9c199dfbe8bce2516fe37393a9d127055
+  url: https://bosh.io/d/github.com/cloudfoundry/cflinuxfs2-rootfs-release?v=1.39.0
+  version: 1.39.0
+  sha1: 0ffd2fad5a71f24caa2c97df95e642be57f34736
 - name: routing
   url: https://bosh.io/d/github.com/cloudfoundry-incubator/cf-routing-release?v=0.141.0
   version: 0.141.0
   sha1: fa4ba9a4ee045bdfb81b5c95b126c95f496ebf2b
-- name: cf
-  url: https://bosh.io/d/github.com/cloudfoundry/cf-release?v=246
-  version: '246'
-  sha1: 50ddad48110e24170b215eec653d407480638c9a
+- name: binary-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/binary-buildpack-release?v=1.0.5
+  version: 1.0.5
+  sha1: 444b244577d726c1dd6f1ae1bb2b0ca373ed9a83
+- name: dotnet-core-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/dotnet-core-buildpack-release?v=v1.0.3
+  version: v1.0.3
+  sha1: fa3793f4db530adf01f4252d5962cd68fd957a9c
+- name: go-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/go-buildpack-release?v=1.7.14
+  version: 1.7.14
+  sha1: 7d01f88819ee6ce79ff587f474d7b5faf5f4c9e3
+- name: java-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/java-buildpack-release?v=3.10
+  version: '3.10'
+  sha1: c771f9d725485aed8e52da1d76bc08acb97b3a83
+- name: java-offline-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/java-offline-buildpack-release?v=3.10
+  version: '3.10'
+  sha1: cfcfc1d8c891fff6eebfc9cf625f941628035dfe
+- name: nodejs-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/nodejs-buildpack-release?v=1.5.22
+  version: 1.5.22
+  sha1: 50a2b82e98aea25828eb8421e82dfadc61e61cc5
+- name: php-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/php-buildpack-release?v=4.3.21
+  version: 4.3.21
+  sha1: 3f0d85bf2deb58cafd136d0c413d908890e50b02
+- name: python-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/python-buildpack-release?v=1.5.11
+  version: 1.5.11
+  sha1: 81f07aa9a45075f6c2fc8c29884262102ac127bd
+- name: ruby-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/ruby-buildpack-release?v=1.6.27
+  version: 1.6.27
+  sha1: 9649219c26d8683109934a7c97b2fa782acfb044
+- name: staticfile-buildpack
+  url: https://bosh.io/d/github.com/cloudfoundry/staticfile-buildpack-release?v=1.3.12
+  version: 1.3.12
+  sha1: 3c331e739c60138da375dfd991bdf66535fe3a96
 stemcells:
 - alias: default
   os: ubuntu-trusty
