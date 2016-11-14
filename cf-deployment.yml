@@ -19,6 +19,9 @@ properties_shared_across_every_instance_group:
     loggregator:
       tls:
         ca_cert: "((loggregator_tls_ca_cert))"
+        metron:
+          cert: "((metron_metron_agent_tls_client_cert))"
+          key: "((metron_metron_agent_tls_client_key))"
       etcd:
         require_ssl: true
         ca_cert: "((etcd_ca_cert))"
@@ -130,7 +133,6 @@ instance_groups:
     max_in_flight: 1
   networks:
   - name: private
-    static_ips: ((etcd_static_ips))
   jobs:
   - name: consul_agent
     release: consul
@@ -565,6 +567,9 @@ instance_groups:
     properties:
       nats: *6
       router:
+        enable_ssl: null
+        ssl_cert: null
+        ssl_key: null
         status:
           password: "((router_status_password))"
           user: "((router_status_user))"
@@ -1097,7 +1102,6 @@ instance_groups:
         ssl: *16
       capi:
         tps:
-          traffic_controller_url: ''
           bbs: *5
           cc:
             basic_auth_password: "((cc_internal_api_password))"
@@ -1189,6 +1193,9 @@ instance_groups:
   vm_extensions:
   - 5GB_ephemeral_disk
   stemcell: default
+  update:
+    max_in_flight: 1
+    serial: true
   networks:
   - name: private
   jobs:
@@ -1201,6 +1208,8 @@ instance_groups:
           domain: cf.internal
           servers:
             lan: ((consul_static_ips))
+          services:
+            loggregator_trafficcontroller: {}
         encrypt_keys: "((consul_encrypt_keys))"
         agent_cert: "((consul_agent_cert))"
         agent_key: "((consul_agent_agent_key))"
@@ -1220,6 +1229,14 @@ instance_groups:
             secret: "((uaa_clients_doppler_secret))"
         url: "((uaa_url))"
       loggregator:
+        tls:
+          ca_cert: "((loggregator_tls_ca_cert))"
+          trafficcontroller:
+            cert: "((loggregator_tls_tc_cert))"
+            key: "((loggregator_tls_tc_key))"
+          metron:
+            cert: "((metron_metron_agent_tls_client_cert))"
+            key: "((metron_metron_agent_tls_client_key))"
         etcd:
           require_ssl: true
           ca_cert: "((etcd_ca_cert))"
@@ -1259,25 +1276,25 @@ instance_groups:
     properties: *2
 releases:
 - name: capi
-  url: https://bosh.io/d/github.com/cloudfoundry/capi-release?v=1.10.0
-  version: 1.10.0
-  sha1: 5021acc1aee1fa92f75dec9927073f8febdccf3b
+  url: https://bosh.io/d/github.com/cloudfoundry/capi-release?v=1.11.0
+  version: 1.11.0
+  sha1: eb7abdc7bc724f48a6b4cdb0b200bee84af1e413
 - name: consul
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/consul-release?v=134
-  version: '134'
-  sha1: 1593817ec5747d03dd957fb1c07de5269742e4eb
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/consul-release?v=137
+  version: '137'
+  sha1: ac7dda874ddddea244fb8b47ffd9560601a92e49
 - name: diego
-  url: https://bosh.io/d/github.com/cloudfoundry/diego-release?v=0.1488.0
-  version: 0.1488.0
-  sha1: aad822353a4753232172896981da1f1f10f45194
+  url: https://bosh.io/d/github.com/cloudfoundry/diego-release?v=0.1489.0
+  version: 0.1489.0
+  sha1: bff4b270c821f122f30ac4bb1a9a966e8be0b819
 - name: etcd
-  url: https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release?v=81
-  version: '81'
-  sha1: 50ccc487d30746283f1ca4c85377444147dc98ef
+  url: https://bosh.io/d/github.com/cloudfoundry-incubator/etcd-release?v=85
+  version: '85'
+  sha1: 4e65d1b7c87ac9544d913dc8548ec5193d5a498b
 - name: loggregator
-  url: https://bosh.io/d/github.com/cloudfoundry/loggregator?v=65
-  version: '65'
-  sha1: 3526f5ca58c2101e44d6c0cbb3d490b2196ec58f
+  url: https://bosh.io/d/github.com/cloudfoundry/loggregator?v=66
+  version: '66'
+  sha1: 12a4be7b5e1106f03295caa9910888c2edaf0bb9
 - name: nats
   url: https://bosh.io/d/github.com/cloudfoundry/nats-release?v=14
   version: '14'
@@ -1287,9 +1304,9 @@ releases:
   version: '32'
   sha1: a41bb2cadd4311bc9977ccc2c1fca07ba41ccef2
 - name: uaa
-  url: https://bosh.io/d/github.com/cloudfoundry/uaa-release?v=20
-  version: '20'
-  sha1: 3d7d72229d660b566444bd09548cc7727a18480d
+  url: https://bosh.io/d/github.com/cloudfoundry/uaa-release?v=21
+  version: '21'
+  sha1: 1f7d382b3990def834b40f23dcb4396a21d6f003
 - name: garden-runc
   url: https://bosh.io/d/github.com/cloudfoundry/garden-runc-release?v=1.0.3
   version: 1.0.3
@@ -1311,9 +1328,9 @@ releases:
   version: v1.0.3
   sha1: fa3793f4db530adf01f4252d5962cd68fd957a9c
 - name: go-buildpack
-  url: https://bosh.io/d/github.com/cloudfoundry/go-buildpack-release?v=1.7.14
-  version: 1.7.14
-  sha1: 7d01f88819ee6ce79ff587f474d7b5faf5f4c9e3
+  url: https://bosh.io/d/github.com/cloudfoundry/go-buildpack-release?v=1.7.15
+  version: 1.7.15
+  sha1: 30c3d61fde24db139c56e340b3f6f7df8fe21260
 - name: java-buildpack
   url: https://bosh.io/d/github.com/cloudfoundry/java-buildpack-release?v=3.10
   version: '3.10'
@@ -1323,26 +1340,26 @@ releases:
   version: '3.10'
   sha1: cfcfc1d8c891fff6eebfc9cf625f941628035dfe
 - name: nodejs-buildpack
-  url: https://bosh.io/d/github.com/cloudfoundry/nodejs-buildpack-release?v=1.5.22
-  version: 1.5.22
-  sha1: 50a2b82e98aea25828eb8421e82dfadc61e61cc5
+  url: https://bosh.io/d/github.com/cloudfoundry/nodejs-buildpack-release?v=1.5.23
+  version: 1.5.23
+  sha1: 77ab9c8aaee8fa6f1c572e72d420b1ef364ceae5
 - name: php-buildpack
-  url: https://bosh.io/d/github.com/cloudfoundry/php-buildpack-release?v=4.3.21
-  version: 4.3.21
-  sha1: 3f0d85bf2deb58cafd136d0c413d908890e50b02
+  url: https://bosh.io/d/github.com/cloudfoundry/php-buildpack-release?v=4.3.22
+  version: 4.3.22
+  sha1: 79d1967fc74ee0ca7f6e5b749a428083d7582972
 - name: python-buildpack
-  url: https://bosh.io/d/github.com/cloudfoundry/python-buildpack-release?v=1.5.11
-  version: 1.5.11
-  sha1: 81f07aa9a45075f6c2fc8c29884262102ac127bd
+  url: https://bosh.io/d/github.com/cloudfoundry/python-buildpack-release?v=1.5.12
+  version: 1.5.12
+  sha1: df0dd6414936bfbb5bfb9a6b2eb3887bb3539e2a
 - name: ruby-buildpack
-  url: https://bosh.io/d/github.com/cloudfoundry/ruby-buildpack-release?v=1.6.27
-  version: 1.6.27
-  sha1: 9649219c26d8683109934a7c97b2fa782acfb044
+  url: https://bosh.io/d/github.com/cloudfoundry/ruby-buildpack-release?v=1.6.28
+  version: 1.6.28
+  sha1: e6127f81568dca1054be14c221b33ab2b411cd74
 - name: staticfile-buildpack
-  url: https://bosh.io/d/github.com/cloudfoundry/staticfile-buildpack-release?v=1.3.12
-  version: 1.3.12
-  sha1: 3c331e739c60138da375dfd991bdf66535fe3a96
+  url: https://bosh.io/d/github.com/cloudfoundry/staticfile-buildpack-release?v=1.3.13
+  version: 1.3.13
+  sha1: 0741ad6d39cf258c317151e1227e0ccfe1fd7579
 stemcells:
 - alias: default
   os: ubuntu-trusty
-  version: '3263.10'
+  version: '3309'
