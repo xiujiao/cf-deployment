@@ -26,4 +26,3 @@ The easiest way to get a file for deployment variables is to generate them with 
 ### BOSH `cloud-config`
 
 `cf-deployment` also assumes that a deployer has already uploaded a [cloud-config](http://bosh.io/docs/cloud-config.html) to the BOSH director.
-
