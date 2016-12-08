@@ -8,9 +8,6 @@ properties_shared_across_every_instance_group:
       deployment: "((metron_agent_deployment_name))"
       protocols:
       - udp
-      tls:
-        client_cert: "((metron_agent_tls_client_cert))"
-        client_key: "((metron_agent_tls_client_key))"
       etcd:
         client_cert: "((etcd_client_cert))"
         client_key: "((etcd_client_key))"
@@ -20,8 +17,8 @@ properties_shared_across_every_instance_group:
       tls:
         ca_cert: "((loggregator_tls_ca_cert))"
         metron:
-          cert: "((metron_agent_tls_client_cert))"
-          key: "((metron_agent_tls_client_key))"
+          cert: "((loggregator_tls_metron_cert))"
+          key: "((loggregator_tls_metron_key))"
       etcd:
         require_ssl: true
         ca_cert: "((etcd_ca_cert))"
@@ -1235,9 +1232,6 @@ instance_groups:
           trafficcontroller:
             cert: "((loggregator_tls_tc_cert))"
             key: "((loggregator_tls_tc_key))"
-          metron:
-            cert: "((metron_agent_tls_client_cert))"
-            key: "((metron_agent_tls_client_key))"
         etcd:
           require_ssl: true
           ca_cert: "((etcd_ca_cert))"
