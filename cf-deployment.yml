@@ -13,6 +13,8 @@ properties_shared_across_every_instance_group:
         client_key: "((etcd_client_key))"
     metron_endpoint:
       shared_secret: "((dropsonde_shared_secret))"
+    doppler:
+      addr: doppler.service.cf.internal
     loggregator:
       tls:
         ca_cert: "((loggregator_tls_ca_cert))"
@@ -1132,6 +1134,8 @@ instance_groups:
           domain: cf.internal
           servers:
             lan: ((consul_static_ips))
+          services:
+            doppler: {}
         encrypt_keys: "((consul_encrypt_keys))"
         agent_cert: "((consul_agent_cert))"
         agent_key: "((consul_agent_agent_key))"
