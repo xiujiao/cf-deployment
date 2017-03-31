@@ -94,7 +94,7 @@ See the rest of this document for more on the new CLI, deployment vars, and conf
 ## Setup and Prerequisites
 `cf-deployment` relies on newer BOSH features,
 and requires a bosh director with a valid cloud-config that has been configured with a certificate authority.
-It also requires the new alpha `bosh` CLI,
+It also requires the new beta `bosh` CLI,
 which it relies on to generate and fill-in needed variables.
 
 - If you are deploying to GCP,
@@ -106,7 +106,7 @@ which it relies on to generate and fill-in needed variables.
 
 ### BOSH CLI
 `cf-deployment` requires the new [BOSH CLI](https://github.com/cloudfoundry/bosh-cli).
-It's in alpha, but has features necessary to use `cf-deployment`.
+It's in beta, but has features necessary to use `cf-deployment`.
 
 ### BOSH `cloud-config`
 `cf-deployment` assumes that
@@ -177,8 +177,8 @@ To deploy to bosh-lite:
 
 ```
 export BOSH_CA_CERT=$PWD/bosh-lite/ca/certs/ca.crt
-bosh -e 192.168.50.4 update-cloud-config bosh-lite/cloud-config.yml
-bosh -e 192.168.50.4 -d cf deploy cf-deployment.yml -o operations/bosh-lite.yml --vars-store deployment-vars.yml -v system_domain=bosh-lite.com
+bosh -e 192.168.50.6 update-cloud-config bosh-lite/cloud-config.yml
+bosh -e 192.168.50.6 -d cf deploy cf-deployment.yml -o operations/bosh-lite.yml --vars-store deployment-vars.yml -v system_domain=bosh-lite.com
 ```
 
 ## Contributing
